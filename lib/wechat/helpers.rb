@@ -8,6 +8,7 @@ module Wechat
                  end
       js_hash = controller.wechat.jsapi_ticket.signature(page_url)
       config_js = <<-WECHAT_CONFIG_JS
+      wx.ready(function(){
 wx.config({
   debug: #{config_options[:debug]},
   appId: "#{controller.class.corpid || controller.class.appid}",
@@ -15,6 +16,7 @@ wx.config({
   nonceStr: "#{js_hash[:noncestr]}",
   signature: "#{js_hash[:signature]}",
   jsApiList: ['#{config_options[:api].join("','")}']
+});
 });
 WECHAT_CONFIG_JS
       javascript_tag config_js, type: 'application/javascript'
